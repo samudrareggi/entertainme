@@ -5,6 +5,6 @@ const client = new MongoClient(databaseUrl, { useUnifiedTopology: true })
 
 client.connect()
 
-const db = client.db('entertain-me')
+const db = client.db('entertain-me-movies')
 
 module.exports = db

@@ -8,7 +8,6 @@ class SeriesController {
     redis.get('series')
       .then(data => {
         if (data) {
-          console.log('disanaa')
           return res.status(200).json(JSON.parse(data))
         }
         return axios({
@@ -28,9 +27,7 @@ class SeriesController {
   static findById(req, res) {
     redis.get('series')
       .then(data => {
-        console.log(data)
         if (data) {
-          console.log('disanaa')
           data = JSON.parse(data)
           const filter = data.filter(datum => datum._id === req.params.id)
           if (filter.length) {
@@ -63,9 +60,8 @@ class SeriesController {
         return redis.get('series')
       })
       .then(data => {
-        console.log(data)
+        redis.del('entertainme')
         if (data) {
-          console.log('disanaa')
           data = JSON.parse(data)
           data.push(result)
           redis.set('series', JSON.stringify(data))
@@ -89,9 +85,8 @@ class SeriesController {
         return redis.get('series')
       })
       .then(data => {
-        console.log(data)
+        redis.del('entertainme')
         if (data) {
-          console.log('disinii')
           data = JSON.parse(data)
           const result = data.map(datum => {
             if (datum._id === req.params.id) {
@@ -117,9 +112,8 @@ class SeriesController {
         return redis.get('series')
       })
       .then(data => {
-        console.log(data)
+        redis.del('entertainme')
         if (data) {
-          console.log('disinii')
           data = JSON.parse(data)
           const filter = data.filter(datum => datum._id !== req.params.id)
           redis.set('series', JSON.stringify(filter))
