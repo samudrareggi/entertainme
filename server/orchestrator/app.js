@@ -10,7 +10,8 @@ const typeDefs = gql`
 const schema = makeExecutableSchema({
   typeDefs : [
     typeDefs,
-    movieSchema.typeDefs
+    movieSchema.typeDefs,
+    seriesSchema.typeDefs
   ],
   resolvers : [
     movieSchema.resolvers,

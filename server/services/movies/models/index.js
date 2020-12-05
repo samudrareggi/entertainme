@@ -15,6 +15,8 @@ class Movie {
   static update(id, newMovie) {
     return Movies.findOneAndUpdate({ _id: ObjectID(id) }, {
       $set: newMovie
+    }, {
+      returnOriginal: false
     })
   }
   static delete(id) {

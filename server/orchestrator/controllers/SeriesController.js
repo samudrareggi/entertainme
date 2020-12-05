@@ -4,11 +4,11 @@ const redis = new Redis()
 const baseUrl = 'http://localhost:5002/tv/'
 
 class SeriesController {
-  static find(req, res) {
-    redis.get('series')
+  static find() {
+    return redis.get('series')
       .then(data => {
         if (data) {
-          return res.status(200).json(JSON.parse(data))
+          return { data: JSON.parse(data) }
         }
         return axios({
           url: baseUrl,
@@ -16,85 +16,85 @@ class SeriesController {
         })
       })
       .then(({data}) => {
-        res.status(200).json(data)
+        console.log(data)
         redis.set('series', JSON.stringify(data))
+        return data
       })
       .catch(err => {
         console.log(err.message)
-        res.status(500).json('Internal Server Error')
+        return err.message
       })
   }
-  static findById(req, res) {
-    redis.get('series')
+  static findById(id) {
+    return redis.get('series')
       .then(data => {
         if (data) {
           data = JSON.parse(data)
-          const filter = data.filter(datum => datum._id === req.params.id)
+          const filter = data.filter(datum => datum._id === id)
           if (filter.length) {
-            return res.status(200).json(filter[0])
+            return { data: filter[0] }
           }
         }
         return axios({
-          url: baseUrl + req.params.id,
+          url: baseUrl + id,
           method: 'GET',
         })
       })
       .then(({data}) => {
-        res.status(200).json(data)
+        return data
       })
       .catch(err => {
         console.log(err.message)
-        res.status(500).json('Internal Server Error')
+        return err.message
       })
   }
-  static create(req, res) {
+  static create(payload) {
     let result = null
-    axios({
+    return axios({
       url: baseUrl,
       method: 'POST',
-      data: req.body
+      data: payload
     })
       .then(({data}) => {
         result = data
-        res.status(201).json(data)
         return redis.get('series')
       })
       .then(data => {
-        redis.del('entertainme')
         if (data) {
           data = JSON.parse(data)
           data.push(result)
           redis.set('series', JSON.stringify(data))
         }
+        return result
       })
       .catch(err => {
         console.log(err)
-        res.status(500).json('Internal Server Error')
+        return err.message
       })
   }
-  static update(req, res) {
+  static update(id, payload) {
     let temp = null
-    axios({
-      url: baseUrl + req.params.id,
+    return axios({
+      url: baseUrl + id,
       method: 'PUT',
-      data: req.body
+      data: payload
     })
       .then(({data}) => {
+        console.log(data)
         temp = data
-        res.status(201).json(data)
         return redis.get('series')
       })
       .then(data => {
-        redis.del('entertainme')
         if (data) {
           data = JSON.parse(data)
           const result = data.map(datum => {
-            if (datum._id === req.params.id) {
+            if (datum._id === id) {
               return temp
             }
             return datum
           })
           redis.set('series', JSON.stringify(result))
+          return temp
         }
       })
       .catch(err => {
@@ -102,26 +102,28 @@ class SeriesController {
         res.status(500).json('Internal Server Error')
       })
   }
-  static delete(req, res) {
-    axios({
-      url: baseUrl + req.params.id,
+  static delete(id) {
+    let result = null
+    return axios({
+      url: baseUrl + id,
       method: 'DELETE',
     })
       .then(({data}) => {
-        res.status(200).json(data)
+        result = data
+        console.log('disini')
         return redis.get('series')
       })
       .then(data => {
-        redis.del('entertainme')
         if (data) {
           data = JSON.parse(data)
-          const filter = data.filter(datum => datum._id !== req.params.id)
+          const filter = data.filter(datum => datum._id !== id)
           redis.set('series', JSON.stringify(filter))
         }
+        return result
       })
       .catch(err => {
         console.log(err.message)
-        res.status(500).json('Internal Server Error')
+        return err.message
       })
   }
 }

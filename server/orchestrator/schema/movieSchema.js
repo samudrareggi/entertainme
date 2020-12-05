@@ -1,6 +1,5 @@
 const { gql } = require('apollo-server')
 const Controller = require('../controllers/MoviesController')
-const axios = require('axios')
 
 const typeDefs = gql`
   type Movie {
