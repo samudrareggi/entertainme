@@ -74,7 +74,7 @@ class MovieController {
       })
       .catch(err => {
         console.log(err.message)
-        res.status(500).json('Internal Server Error')
+        return err.message
       })
   }
   static delete(id) {

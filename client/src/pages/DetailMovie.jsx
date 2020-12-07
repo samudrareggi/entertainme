@@ -1,49 +1,15 @@
 import React from 'react'
-import { useQuery, gql, useMutation } from '@apollo/client'
+import { useQuery, useMutation } from '@apollo/client'
 import LoadingSkeleton from '../components/LoadingSkeleton'
 import { useParams, useHistory } from 'react-router-dom'
+import {GET_DATA_BY_ID, DELETE_MOVIE} from '../configs/query'
 import '../styles/Card.css'
 import '../styles/Fab.css'
-
-const GET_DATA_BY_ID = gql`
-  query getData($_id: ID) {
-    movie(_id: $_id) {
-      _id
-      title
-      overview
-      poster_path
-      popularity
-      tags
-    }
-  }
-`
-
-const GET_DATA = gql`
-  query getData {
-    movies {
-      _id
-      title
-      overview
-      poster_path
-      popularity
-      tags
-    }
-  }
-`
-
-const DELETE_MOVIE = gql`
-  mutation DeleteMovie($_id: ID) {
-    deleteMovie(_id: $_id) {
-      title
-    }
-  }
-`
 
 export default function DetailMovie(props) {
   const { id } = useParams()
   const history = useHistory()
   const [MutationDeleteMovie] = useMutation(DELETE_MOVIE)
-  const { refetch } = useQuery(GET_DATA)
   const { loading, error, data } = useQuery(GET_DATA_BY_ID, {
     variables: {
       _id: id
@@ -60,8 +26,7 @@ export default function DetailMovie(props) {
     MutationDeleteMovie({
       variables: { _id: id }
     })
-    refetch()
-    history.push(`/movies`)
+    history.push(`/`)
   }
 
   if (loading) return <LoadingSkeleton />

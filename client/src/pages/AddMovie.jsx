@@ -1,36 +1,12 @@
 import React, { useState } from 'react'
 import '../styles/Input.css'
-import { gql, useMutation, useQuery } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { useHistory } from 'react-router-dom'
+import {ADD_MOVIE} from '../configs/query'
 
-const GET_DATA = gql`
-  query getData {
-    movies {
-      _id
-      title
-      overview
-      poster_path
-      popularity
-      tags
-    }
-  }
-`
-const ADD_MOVIE = gql`
-  mutation AddMovie($movie: newMovie) {
-    addMovie(movie: $movie) {
-      _id
-      title
-      overview
-      poster_path
-      popularity
-      tags
-    }
-  }
-`
 export default function AddMovie(props) {
   const history = useHistory()
   const [addMovie] = useMutation(ADD_MOVIE)
-  const { refetch } = useQuery(GET_DATA)
 
   const [input, setInput] = useState([])
 
@@ -85,8 +61,7 @@ export default function AddMovie(props) {
     addMovie({
       variables: {movie: inputForm}
     })
-    refetch()
-    history.push('/movies')
+    history.push('/')
   }
   return (
     <div className="vh-100" style={{ backgroundColor: "#121212" }}>

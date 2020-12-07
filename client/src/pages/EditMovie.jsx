@@ -1,50 +1,14 @@
 import React, { useState } from 'react'
 import '../styles/Input.css'
-import { gql, useMutation, useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { useHistory, useParams } from 'react-router-dom'
+import {GET_DATA_BY_ID, UPDATE_MOVIE} from '../configs/query'
 
-const GET_DATA = gql`
-  query getData {
-    movies {
-      _id
-      title
-      overview
-      poster_path
-      popularity
-      tags
-    }
-  }
-`
-const GET_DATA_BY_ID = gql`
-  query getData($_id: ID) {
-    movie(_id: $_id) {
-      _id
-      title
-      overview
-      poster_path
-      popularity
-      tags
-    }
-  }
-`
-const ADD_MOVIE = gql`
-  mutation AddMovie($movie: newMovie) {
-    addMovie(movie: $movie) {
-      _id
-      title
-      overview
-      poster_path
-      popularity
-      tags
-    }
-  }
-`
 export default function EditMovie(props) {
   const { id } = useParams()
   const history = useHistory()
-  const [addMovie] = useMutation(ADD_MOVIE)
-  const { refetch } = useQuery(GET_DATA)
-  const { loading, error, data } = useQuery(GET_DATA_BY_ID, {
+  const [updateMovie] = useMutation(UPDATE_MOVIE)
+  const { loading, data } = useQuery(GET_DATA_BY_ID, {
     variables: {
       _id: id
     }
@@ -101,13 +65,28 @@ export default function EditMovie(props) {
 
   const submitHandler = (e) => {
     e.preventDefault()
-    addMovie({
-      variables: {movie: inputForm}
-    })
-    refetch()
-    history.push('/movies')
-  }
+    const temp = {...inputForm}
 
+    if (!temp.title.length) {
+      temp.title = data.movie.title
+    }
+    if (!temp.overview.length) {
+      temp.overview = data.movie.overview
+    }
+    if (!temp.poster_path.length) {
+      temp.poster_path = data.movie.poster_path
+    }
+    if (!temp.popularity) {
+      temp.popularity = data.movie.popularity
+    }
+    if (!temp.tags.length) {
+      temp.tags = data.movie.tags
+    }
+    updateMovie({
+      variables: { _id: id, movie: temp }
+    })
+    history.push('/')
+  }
   if (loading) return <p>Loading</p>
   return (
     <div className="vh-100" style={{ backgroundColor: "#121212" }}>
@@ -130,7 +109,7 @@ export default function EditMovie(props) {
             <div className="checkIn">
               {tags.map(el => (
                 <div className="form-check" key={el.tag}>
-                  <input className="form-check-input" type="checkbox" name="tags" value={el.tag} onChange={inputHandler} checked={el.tags} />
+                  <input className="form-check-input" type="checkbox" name="tags" value={el.tag} onChange={inputHandler} checked={el.isChecked} />
                   <label className="form-check-label">
                     {el.tag}
                   </label>
