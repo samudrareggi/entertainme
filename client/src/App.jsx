@@ -6,6 +6,7 @@ import Movies from './pages/Movies'
 import DetailMovie from './pages/DetailMovie'
 import AddMovie from './pages/AddMovie'
 import EditMovie from './pages/EditMovie'
+import Favorite from './pages/Favorite'
 import Nav from './components/Nav'
 
 function App() {
@@ -30,6 +31,9 @@ function App() {
         </Route>
         <Route path="/add-movie">
           <AddMovie />
+        </Route>
+        <Route path="/favorites">
+          <Favorite />
         </Route>
       </Switch>
     </ApolloProvider>

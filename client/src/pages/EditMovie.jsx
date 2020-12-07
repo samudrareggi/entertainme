@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import '../styles/Input.css'
 import { useMutation, useQuery } from '@apollo/client'
 import { useHistory, useParams } from 'react-router-dom'
-import {GET_DATA_BY_ID, UPDATE_MOVIE} from '../configs/query'
+import { GET_DATA_BY_ID, UPDATE_MOVIE } from '../configs/query'
+import LoadingBar from 'react-top-loading-bar'
 
 export default function EditMovie(props) {
+  const [progress, setProgress] = useState(100)
   const { id } = useParams()
   const history = useHistory()
   const [updateMovie] = useMutation(UPDATE_MOVIE)
@@ -17,11 +19,11 @@ export default function EditMovie(props) {
   const [input, setInput] = useState([])
 
   const [tags, setTag] = useState([
-    { tag: "Action", isChecked: false},
-    { tag: "Adventure", isChecked: false},
-    { tag: "Animation", isChecked: false},
-    { tag: "Crime", isChecked: false},
-    { tag: "Drama", isChecked: false},
+    { tag: "Action", isChecked: false },
+    { tag: "Adventure", isChecked: false },
+    { tag: "Animation", isChecked: false },
+    { tag: "Crime", isChecked: false },
+    { tag: "Drama", isChecked: false },
   ])
 
   const [inputForm, setInputForm] = useState({
@@ -40,9 +42,9 @@ export default function EditMovie(props) {
     const result = tags.map(el => {
       if (el.tag === value) {
         let i = temp.indexOf(el.tag)
-        el.isChecked? temp.splice(i,1) : temp.push(el.tag)
+        el.isChecked ? temp.splice(i, 1) : temp.push(el.tag)
         setInput(temp)
-        return { tag: el.tag, isChecked: el.isChecked? false: true }
+        return { tag: el.tag, isChecked: el.isChecked ? false : true }
       }
       return el
     })
@@ -65,7 +67,7 @@ export default function EditMovie(props) {
 
   const submitHandler = (e) => {
     e.preventDefault()
-    const temp = {...inputForm}
+    const temp = { ...inputForm }
 
     if (!temp.title.length) {
       temp.title = data.movie.title
@@ -87,18 +89,20 @@ export default function EditMovie(props) {
     })
     history.push('/')
   }
-  if (loading) return <p>Loading</p>
+  if (loading) return (<div className="vh-100 pt-5" style={{ backgroundColor: "#121212" }}>
+    <LoadingBar color="red" progress={progress} onLoaderFinished={() => setProgress(0)} shadow={true} />
+  </div>)
   return (
     <div className="vh-100" style={{ backgroundColor: "#121212" }}>
       <div className="container pt-5 d-flex justify-content-center">
         <div className="card" style={{ backgroundColor: "#0f1a2a", borderRadius: 15 }}>
           <form onSubmit={submitHandler}>
-            <h1 className="text-warning pt-3 text-center">Add Movies</h1>
+            <h1 className="text-warning pt-3 text-center">Edit Movie</h1>
             <div className="con-input">
               <input type="text" name="title" defaultValue={data.movie.title} onChange={inputHandler} placeholder="Title" />
             </div>
             <div className="con-input">
-              <textarea placeholder="Overview" name="overview" defaultValue={data.movie.overview} onChange={inputHandler}/>
+              <textarea placeholder="Overview" name="overview" defaultValue={data.movie.overview} onChange={inputHandler} />
             </div>
             <div className="con-input">
               <input type="url" name="poster_path" defaultValue={data.movie.poster_path} onChange={inputHandler} placeholder="Image" />

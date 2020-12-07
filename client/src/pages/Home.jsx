@@ -1,41 +1,14 @@
 import React, { useEffect } from 'react'
-import { useQuery, gql } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import Card from '../components/Card'
 import LoadingSkeleton from '../components/LoadingSkeleton'
-import client from '../configs'
-
-const GET_DATA = gql`
-  query getData {
-    movies {
-      _id
-      title
-      overview
-      poster_path
-      popularity
-      tags
-    }
-    series {
-      _id
-      title
-      overview
-      poster_path
-      popularity
-      tags
-    }
-  }
-`
+import {GET_DATA} from '../configs/query'
 
 export default function Home(props) {
   const { loading, error, data, refetch } = useQuery(GET_DATA)
 
   useEffect(() => {
-    const movies = client.readQuery({
-      query: GET_DATA
-    })
-
-    if (movies) {
       refetch()
-    }
   }, [refetch])
 
   if (loading) return <LoadingSkeleton />

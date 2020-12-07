@@ -63,12 +63,13 @@ export default function AddMovie(props) {
     })
     history.push('/')
   }
+
   return (
     <div className="vh-100" style={{ backgroundColor: "#121212" }}>
       <div className="container pt-5 d-flex justify-content-center">
         <div className="card" style={{ backgroundColor: "#0f1a2a", borderRadius: 15 }}>
           <form onSubmit={submitHandler}>
-            <h1 className="text-warning pt-3 text-center">Add Movies</h1>
+            <h1 className="text-warning pt-3 text-center">Add Movie</h1>
             <div className="con-input">
               <input type="text" name="title" value={inputForm.title} onChange={inputHandler} placeholder="Title" />
             </div>

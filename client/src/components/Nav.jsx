@@ -23,6 +23,9 @@ export default function Nav(props) {
             <li className="nav-item">
               <Link to="/add-movie" className="nav-link" >Add Movie</Link>
             </li>
+            <li className="nav-item">
+              <Link to="/favorites" className="nav-link" >Favorite</Link>
+            </li>
           </ul>
           <form className="form-inline my-2 my-lg-0">
             <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
