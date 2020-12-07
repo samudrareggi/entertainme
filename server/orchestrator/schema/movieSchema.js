@@ -17,11 +17,11 @@ const typeDefs = gql`
   }
 
   input newMovie {
-    title: String
-    overview: String
-    poster_path: String
-    popularity: Float
-    tags: [String]
+    title: String!
+    overview: String!
+    poster_path: String!
+    popularity: Float!
+    tags: [String]!
   }
 
   extend type Mutation {

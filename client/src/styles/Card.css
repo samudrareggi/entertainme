@@ -12,10 +12,18 @@
   padding: 0 !important;
 }
 
+.cardTop :hover {
+  opacity: 0.8;
+}
+
 .bodyCard {
   background-color: #0f1a2a;
 }
 
 .star {
   font-size: "18px";
+}
+
+.textcolor {
+  color: #bdbdbd;
 }

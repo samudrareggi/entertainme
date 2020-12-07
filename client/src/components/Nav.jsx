@@ -1,8 +1,10 @@
+import { Link } from 'react-router-dom'
+
 export default function Nav(props) {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark" style={{ backgroundColor: '#0f1a2a' }}>
       <div className="container">
-        <a className="navbar-brand" href="#">Navbar</a>
+        <Link to="/" className="navbar-brand" >EMe</Link>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>
@@ -10,13 +12,16 @@ export default function Nav(props) {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mr-auto">
             <li className="nav-item dropdown">
-              <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <p className="nav-link dropdown-toggle m-auto" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Category
-              </a>
+              </p>
               <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a className="dropdown-item" href="#">Movies</a>
-                <a className="dropdown-item" href="#">Tv Series</a>
+                <Link to="/movies" className="dropdown-item" >Movies</Link>
+                <Link to="/tv" className="dropdown-item" >Tv Series</Link>
               </div>
+            </li>
+            <li className="nav-item">
+              <Link to="/add-movie" className="nav-link" >Add Movie</Link>
             </li>
           </ul>
           <form className="form-inline my-2 my-lg-0">

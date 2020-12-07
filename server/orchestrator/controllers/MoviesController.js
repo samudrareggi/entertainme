@@ -16,7 +16,6 @@ class MovieController {
         })
       })
       .then(({data}) => {
-        console.log(data)
         redis.set('movies', JSON.stringify(data))
         return data
       })
@@ -49,23 +48,14 @@ class MovieController {
       })
   }
   static create(payload) {
-    let result = null
     return axios({
       url: baseUrl,
       method: 'POST',
       data: payload
     })
       .then(({data}) => {
-        result = data
-        return redis.get('movies')
-      })
-      .then(data => {
-        if (data) {
-          data = JSON.parse(data)
-          data.push(result)
-          redis.set('movies', JSON.stringify(data))
-        }
-        return result
+        redis.del('movies')
+        return data
       })
       .catch(err => {
         console.log(err)
@@ -73,29 +63,14 @@ class MovieController {
       })
   }
   static update(id, payload) {
-    let temp = null
     return axios({
       url: baseUrl + id,
       method: 'PUT',
       data: payload
     })
       .then(({data}) => {
-        console.log(data)
-        temp = data
-        return redis.get('movies')
-      })
-      .then(data => {
-        if (data) {
-          data = JSON.parse(data)
-          const result = data.map(datum => {
-            if (datum._id === id) {
-              return temp
-            }
-            return datum
-          })
-          redis.set('movies', JSON.stringify(result))
-          return temp
-        }
+        redis.del('movies')
+        return data
       })
       .catch(err => {
         console.log(err.message)
@@ -103,23 +78,13 @@ class MovieController {
       })
   }
   static delete(id) {
-    let result = null
     return axios({
       url: baseUrl + id,
       method: 'DELETE',
     })
       .then(({data}) => {
-        result = data
-        console.log('disini')
-        return redis.get('movies')
-      })
-      .then(data => {
-        if (data) {
-          data = JSON.parse(data)
-          const filter = data.filter(datum => datum._id !== id)
-          redis.set('movies', JSON.stringify(filter))
-        }
-        return result
+        redis.del('movies')
+        return data
       })
       .catch(err => {
         console.log(err.message)
