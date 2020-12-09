@@ -17,7 +17,7 @@ const typeDefs = gql`
   }
 
   input newMovie {
-    title: String!
+    title: String! @constraint(minLength: 5)
     overview: String!
     poster_path: String!
     popularity: Float!

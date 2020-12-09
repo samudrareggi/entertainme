@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import '../styles/Input.css'
 import { useMutation, useQuery } from '@apollo/client'
 import { useHistory, useParams } from 'react-router-dom'
@@ -6,7 +6,7 @@ import { GET_DATA_BY_ID, UPDATE_MOVIE } from '../configs/query'
 import LoadingBar from 'react-top-loading-bar'
 
 export default function EditMovie(props) {
-  const [progress, setProgress] = useState(100)
+  const [progress, setProgress] = useState(99)
   const { id } = useParams()
   const history = useHistory()
   const [updateMovie] = useMutation(UPDATE_MOVIE)
@@ -15,6 +15,15 @@ export default function EditMovie(props) {
       _id: id
     }
   })
+
+  useEffect(() => {
+    setTimeout(() => {
+      setProgress(100)
+    }, 1000)
+    return (() => {
+      setProgress(0)
+    })
+  }, [])
 
   const [input, setInput] = useState([])
 
@@ -99,21 +108,21 @@ export default function EditMovie(props) {
           <form onSubmit={submitHandler}>
             <h1 className="text-warning pt-3 text-center">Edit Movie</h1>
             <div className="con-input">
-              <input type="text" name="title" defaultValue={data.movie.title} onChange={inputHandler} placeholder="Title" />
+              <input required type="text" name="title" defaultValue={data.movie.title} onChange={inputHandler} placeholder="Title" />
             </div>
             <div className="con-input">
               <textarea placeholder="Overview" name="overview" defaultValue={data.movie.overview} onChange={inputHandler} />
             </div>
             <div className="con-input">
-              <input type="url" name="poster_path" defaultValue={data.movie.poster_path} onChange={inputHandler} placeholder="Image" />
+              <input required type="url" name="poster_path" defaultValue={data.movie.poster_path} onChange={inputHandler} placeholder="Image" />
             </div>
             <div className="con-input">
-              <input type="number" name="popularity" defaultValue={data.movie.popularity} onChange={inputHandler} step="0.1" min="0" max="10" placeholder="Popularity" />
+              <input required type="number" name="popularity" defaultValue={data.movie.popularity} onChange={inputHandler} step="0.1" min="0" max="10" placeholder="Popularity" />
             </div>
             <div className="checkIn">
               {tags.map(el => (
                 <div className="form-check" key={el.tag}>
-                  <input className="form-check-input" type="checkbox" name="tags" value={el.tag} onChange={inputHandler} checked={el.isChecked} />
+                  <input required className="form-check-input" type="checkbox" name="tags" value={el.tag} onChange={inputHandler} checked={el.isChecked} />
                   <label className="form-check-label">
                     {el.tag}
                   </label>

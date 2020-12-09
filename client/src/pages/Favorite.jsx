@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import Card from '../components/Card'
-import LoadingBar from 'react-top-loading-bar'
+import { Card } from '../components'
 import { favoriteVar } from '../configs'
+import LoadingBar from 'react-top-loading-bar'
 import notfound from '../assets/notfound.png'
+
 export default function Favorite(props) {
-  const [progress, setProgress] = useState(50)
+  const [progress, setProgress] = useState(99)
   const [data, setData] = useState([])
   useEffect(() => {
     const currentFav = favoriteVar()
@@ -12,10 +13,13 @@ export default function Favorite(props) {
     setTimeout(() => {
       setProgress(100)
     }, 1000)
+    return (() => {
+      setProgress(0)
+    })
   }, [])
-console.log(favoriteVar());
-  if (progress) return (<div className="vh-100" style={{ backgroundColor: "#121212" }}>
-    <LoadingBar color="red" progress={progress} onLoaderFinished={() => setProgress(0)} shadow={true}/>
+
+  if (progress === 99) return (<div className="vh-100" style={{ backgroundColor: "#121212" }}>
+    <LoadingBar color="red" progress={progress} shadow={true}/>
   </div>)
 
   if (!data.length) return (

@@ -1,18 +1,16 @@
 import React, { useEffect } from 'react'
 import { useQuery } from '@apollo/client'
-import Card from '../components/Card'
-import LoadingSkeleton from '../components/LoadingSkeleton'
+import { Card, LoadingSkeleton } from '../components'
 import {GET_DATA} from '../configs/query'
 
 export default function Home(props) {
-  const { loading, error, data, refetch } = useQuery(GET_DATA)
+  const { loading, data, refetch } = useQuery(GET_DATA)
 
   useEffect(() => {
       refetch()
   }, [refetch])
 
   if (loading) return <LoadingSkeleton />
-  if (error) return <p>Error :(</p>
 
   return (
     <div className="h-100" style={{ backgroundColor: "#121212"}}>

@@ -16,7 +16,6 @@ class SeriesController {
         })
       })
       .then(({data}) => {
-        console.log(data)
         redis.set('series', JSON.stringify(data))
         return data
       })

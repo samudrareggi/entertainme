@@ -1,8 +1,7 @@
 import React from 'react'
 import { useQuery } from '@apollo/client'
-import Card from '../components/Card'
-import LoadingSkeleton from '../components/LoadingSkeleton'
-import {GET_DATA} from '../configs/query'
+import { Card, LoadingSkeleton } from '../components'
+import { GET_DATA } from '../configs/query'
 
 export default function Movies(props) {
   const { loading, error, data } = useQuery(GET_DATA)

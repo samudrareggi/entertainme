@@ -1,13 +1,8 @@
 import client from './configs'
 import { ApolloProvider } from '@apollo/client'
 import { Switch, Route } from 'react-router-dom'
-import Home from './pages/Home'
-import Movies from './pages/Movies'
-import DetailMovie from './pages/DetailMovie'
-import AddMovie from './pages/AddMovie'
-import EditMovie from './pages/EditMovie'
-import Favorite from './pages/Favorite'
-import Nav from './components/Nav'
+import {Home, Movies, DetailMovie, AddMovie, EditMovie, Favorite} from './pages'
+import {Nav, NotFound} from './components'
 
 function App() {
   return (
@@ -34,6 +29,9 @@ function App() {
         </Route>
         <Route path="/favorites">
           <Favorite />
+        </Route>
+        <Route>
+          <NotFound />
         </Route>
       </Switch>
     </ApolloProvider>

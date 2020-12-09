@@ -1,14 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useQuery, useMutation } from '@apollo/client'
 import { useParams, useHistory } from 'react-router-dom'
 import { GET_DATA_BY_ID, DELETE_MOVIE } from '../configs/query'
+import { NotFound } from '../components'
 import LoadingBar from 'react-top-loading-bar'
-import notfound from '../assets/notfound.png'
 import '../styles/Card.css'
 import '../styles/Fab.css'
 
 export default function DetailMovie(props) {
-  const [progress, setProgress] = useState(100)
+  const [progress, setProgress] = useState(99)
   const { id } = useParams()
   const history = useHistory()
   const [MutationDeleteMovie] = useMutation(DELETE_MOVIE)
@@ -17,6 +17,15 @@ export default function DetailMovie(props) {
       _id: id
     }
   })
+
+  useEffect(() => {
+    setTimeout(() => {
+      setProgress(100)
+    }, 1000)
+    return (() => {
+      setProgress(0)
+    })
+  }, [])
 
   const editItem = (e) => {
     e.preventDefault()
@@ -35,11 +44,7 @@ export default function DetailMovie(props) {
     <LoadingBar color="red" progress={progress} onLoaderFinished={() => setProgress(0)} shadow={true} />
   </div>)
 
-  if (!data.movie._id) return (
-    <div className="vh-100 text-center" style={{ backgroundColor: "#121212" }}>
-      <img src={notfound} alt="..." style={{ width: 200, paddingTop: "30vh" }} />
-      <h1 className="text-warning">404 Not Found</h1>
-    </div>)
+  if (!data.movie._id) return <NotFound/>
 
   const { title, overview, poster_path, popularity, tags } = data.movie
   return (

@@ -71,21 +71,21 @@ export default function AddMovie(props) {
           <form onSubmit={submitHandler}>
             <h1 className="text-warning pt-3 text-center">Add Movie</h1>
             <div className="con-input">
-              <input type="text" name="title" value={inputForm.title} onChange={inputHandler} placeholder="Title" />
+              <input required type="text" name="title" value={inputForm.title} onChange={inputHandler} placeholder="Title" />
             </div>
             <div className="con-input">
-              <textarea placeholder="Overview" name="overview" value={inputForm.overview} onChange={inputHandler}/>
+              <textarea required placeholder="Overview" name="overview" value={inputForm.overview} onChange={inputHandler}/>
             </div>
             <div className="con-input">
-              <input type="url" name="poster_path" value={inputForm.poster_path} onChange={inputHandler} placeholder="Image" />
+              <input required type="url" name="poster_path" value={inputForm.poster_path} onChange={inputHandler} placeholder="Image" />
             </div>
             <div className="con-input">
-              <input type="number" name="popularity" defaultValue={inputForm.popularity} onChange={inputHandler} step="0.1" min="0" max="10" placeholder="Popularity" />
+              <input required type="number" name="popularity" defaultValue={inputForm.popularity} onChange={inputHandler} step="0.1" min="0" max="10" placeholder="Popularity" />
             </div>
             <div className="checkIn">
               {tags.map(el => (
                 <div className="form-check" key={el.tag}>
-                  <input className="form-check-input" type="checkbox" name="tags" value={el.tag} onChange={inputHandler} checked={el.isChecked} />
+                  <input required className="form-check-input" type="checkbox" name="tags" value={el.tag} onChange={inputHandler} checked={el.isChecked} />
                   <label className="form-check-label">
                     {el.tag}
                   </label>
