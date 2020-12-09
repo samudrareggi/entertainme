@@ -1,7 +1,7 @@
 import client from './configs'
 import { ApolloProvider } from '@apollo/client'
 import { Switch, Route } from 'react-router-dom'
-import {Home, Movies, DetailMovie, AddMovie, EditMovie, Favorite} from './pages'
+import {Home, Movies, DetailMovie, AddMovie, EditMovie, Favorite, Series, DetailSeries} from './pages'
 import {Nav, NotFound} from './components'
 
 function App() {
@@ -15,6 +15,9 @@ function App() {
         <Route path="/movies/:id">
           <DetailMovie />
         </Route>
+        <Route path="/tv/:id">
+          <DetailSeries />
+        </Route>
         <Route path="/edit-movie/:id">
           <EditMovie />
         </Route>
@@ -22,7 +25,7 @@ function App() {
           <Movies />
         </Route>
         <Route path="/tv">
-          <Movies />
+          <Series />
         </Route>
         <Route path="/add-movie">
           <AddMovie />

@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom'
 import { favoriteVar } from '../configs'
 
 export default function Card(props) {
-  const { _id, title, overview, poster_path, popularity, tags } = props.data
+  const { __typename, _id, title, overview, poster_path, popularity, tags } = props.data
   const history = useHistory()
   const [like, setLike] = useState(null)
 
@@ -26,8 +26,11 @@ export default function Card(props) {
     }
   }, [])
 
-  const changePage = (id) => {
-    history.push(`/movies/${id}`)
+  const changePage = (type, id) => {
+    if (type === 'Movie') {
+      return history.push(`/movies/${id}`)
+    }
+    history.push(`/tv/${id}`)
   }
 
   const onClick = (movie) => {
@@ -60,7 +63,7 @@ export default function Card(props) {
             like
           }
         </div>
-        <h5 onClick={() => changePage(_id)} className="card-title text-light" style={{ cursor: "pointer" }}>{title}</h5>
+        <h5 onClick={() => changePage(__typename, _id)} className="card-title text-light" style={{ cursor: "pointer" }}>{title}</h5>
         <p className="card-text text">{overview}</p>
       </div>
       <div className="card-footer" style={{ backgroundColor: "#0f1a2a" }}>

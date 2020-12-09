@@ -1,6 +1,34 @@
 import { Link } from 'react-router-dom'
+import { useQuery } from '@apollo/client'
+import { GET_DATA } from '../configs/query'
+import { debounce } from 'lodash'
+import { useHistory } from 'react-router-dom'
+import React, { useState } from 'react'
 
 export default function Nav(props) {
+  const { data } = useQuery(GET_DATA)
+  const [result, setResult] = useState([])
+  const history = useHistory()
+
+  const onChange = debounce((event) => {
+    const value = event.target.value
+    const currentVal = []
+    for (const property in data) {
+      data[property].forEach(el => {
+        currentVal.push(el)
+      })
+    }
+    const filter = currentVal.filter(el => (el.title.toLowerCase().includes(value.toLowerCase())))
+    value ? setResult(filter) : setResult([])
+  }, 300)
+
+  const onClick = (type, id) => {
+    if (type === 'Movie') {
+      return history.push(`/movies/${id}`)
+    }
+    history.push(`/tv/${id}`)
+  }
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark" style={{ backgroundColor: '#0f1a2a' }}>
       <div className="container">
@@ -27,10 +55,21 @@ export default function Nav(props) {
               <Link to="/favorites" className="nav-link" >Favorite</Link>
             </li>
           </ul>
-          <form className="form-inline my-2 my-lg-0">
-            <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
-            <button className="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
-          </form>
+          <div className="form my-2 my-lg-0 position-relative">
+            <input onChange={onChange} className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
+            {
+              result &&
+              <div className="card position-absolute" style={{ width: "15.2rem" }}>
+                <ul className="list-group list-group-flush">
+                  {
+                    result.map(el => (
+                      <li key={el._id} style={{ cursor: "pointer" }} onClick={() => onClick(el.__typename, el._id)} className="list-group-item">{el.title}</li>
+                    ))
+                  }
+                </ul>
+              </div>
+            }
+          </div>
         </div>
       </div>
     </nav>

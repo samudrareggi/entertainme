@@ -3,7 +3,7 @@ import { useQuery } from '@apollo/client'
 import { Card, LoadingSkeleton } from '../components'
 import { GET_DATA } from '../configs/query'
 
-export default function Series(props) {
+export default function Movies(props) {
   const { loading, data } = useQuery(GET_DATA)
 
   if (loading) return <LoadingSkeleton />
@@ -13,7 +13,7 @@ export default function Series(props) {
       <div className="container">
         <h1 className="text-warning pt-3">Movies</h1>
         <div className="d-flex row pt-2">
-          {data.series.map(datum => (
+          {data.movies.map(datum => (
             <Card key={datum._id} data={datum} />
           ))}
         </div>

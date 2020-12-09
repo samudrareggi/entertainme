@@ -111,7 +111,7 @@ export default function EditMovie(props) {
               <input required type="text" name="title" defaultValue={data.movie.title} onChange={inputHandler} placeholder="Title" />
             </div>
             <div className="con-input">
-              <textarea placeholder="Overview" name="overview" defaultValue={data.movie.overview} onChange={inputHandler} />
+              <textarea required placeholder="Overview" name="overview" defaultValue={data.movie.overview} onChange={inputHandler} />
             </div>
             <div className="con-input">
               <input required type="url" name="poster_path" defaultValue={data.movie.poster_path} onChange={inputHandler} placeholder="Image" />
@@ -122,7 +122,7 @@ export default function EditMovie(props) {
             <div className="checkIn">
               {tags.map(el => (
                 <div className="form-check" key={el.tag}>
-                  <input required className="form-check-input" type="checkbox" name="tags" value={el.tag} onChange={inputHandler} checked={el.isChecked} />
+                  <input className="form-check-input" type="checkbox" name="tags" value={el.tag} onChange={inputHandler} checked={el.isChecked} />
                   <label className="form-check-label">
                     {el.tag}
                   </label>

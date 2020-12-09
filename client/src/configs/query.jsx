@@ -32,6 +32,18 @@ export const GET_DATA_BY_ID = gql`
     }
   }
 `
+export const GET_TV_DATA_BY_ID = gql`
+  query getData($_id: ID) {
+    seri(_id: $_id) {
+      _id
+      title
+      overview
+      poster_path
+      popularity
+      tags
+    }
+  }
+`
 export const DELETE_MOVIE = gql`
   mutation DeleteMovie($_id: ID) {
     deleteMovie(_id: $_id) {
